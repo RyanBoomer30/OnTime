@@ -1,0 +1,87 @@
+{% extends "taskmanager/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes App</title>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.1.1/marked.min.js"></script>
+    <script src="{% static 'taskmanager/index.js' %}"></script>
+{% endblock %}
+
+{% block nextBody %}
+    <div>
+        <form action="{% url 'createTask' %}" method = "POST">
+            {% csrf_token %}
+            <button class="add" id="add">
+                <i class="fas fa-plus">Add note</i> 
+            </button>
+        </form>
+    </div>
+    {% for task in task %}
+    <div class="note" id="{{ task.id }}">
+        <div class="notes">
+            <div class="tools">
+                <form action="{% url 'editTask' task.id%}" method = "POST" class="task_title" >
+                    {% csrf_token %}
+                    <input type="text" class="task_title"  id="title_{{ task.id }}" name="title" value="{{ task.title }}">
+                </form>
+                <form action="{% url 'createList' task.id%}" method = "POST">
+                    {% csrf_token %}
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                </form>
+                <form action="{% url 'deleteTask' task.id%}" method = "POST">
+                    {% csrf_token %}
+                    <button class="delete"><i class="fas fa-trash-alt"></i></button>
+                </form>
+            </div>
+            <div class="task_list" id="list_{{ task.id }}">
+                {% for id, i in list.items %}
+                    {% if id == task.id %}
+                        {% for list in i%}
+                        <div class="list_item">
+                            <form action="{% url 'toggleList' task.id list.id%}" method = "POST">
+                                {% csrf_token %}
+                                <button class="check"><i class="far fa-circle fa-xs" ></i></button>
+                            </form>
+                            <form action="{% url 'editList' task.id list.id %}" method = "POST">
+                                {% csrf_token %}
+                                <input type="text" class="list_content"  id="list_{{ list.id }}" name="title" value="{{ list.content }}">
+                            </form>
+                            <form action="{% url 'deleteList' task.id list.id%}" method = "POST">
+                                {% csrf_token %}
+                                <button class="delete"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </div>
+                        {% endfor %}
+                        
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% for id, list in list.items %}
+                {% if id == task.id %}
+                <h6 class="page" style="border-style: hidden;">
+                    {% if list.has_previous %}
+                        &nbsp; <a href="?page={{ list.previous_page_number }}">previous</a>
+                    {% endif %} 
+                
+                    &nbsp; Page {{ list.number }} of {{ list.paginator.num_pages }}
+                
+                    {% if list.has_next %}
+                        &nbsp; <a href="?page={{ list.next_page_number }}">next</a>
+                    {% endif %}
+                </h6>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <div class=tasks>
+
+    </div>
+{% endblock %}
+
