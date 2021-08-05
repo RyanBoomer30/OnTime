@@ -22,7 +22,7 @@
         <div class="projects" id="projects">
             <form action="{% url 'viewProject' projects.id %}" method = "POST">
                 {% csrf_token %}
-                <button class="delete"><i class="fas fa-clipboard"></i></button>
+                <button class="delete"><i class="fas fa-sign-in-alt"></i></button>
             </form>
             <h3>{{ projects.name }}</h3>
             <form action="{% url 'deleteProject' projects.id %}" method = "POST">

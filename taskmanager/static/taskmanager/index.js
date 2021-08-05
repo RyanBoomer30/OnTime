@@ -1,3 +1,4 @@
+// Run when the user update a list's status (done/not done)
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelectorAll('.check').forEach(button =>{
         button.onclick = function() {
@@ -6,14 +7,16 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 })
 
+// Run when the user delete a task
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelectorAll('.delete').forEach(button =>{
         button.onclick = function() {
-            DeletePost(this.dataset.project,this.dataset.task)
+            DeleteTask(this.dataset.project,this.dataset.task)
         }
     })
 })
 
+// Run when the user delete a list
 document.addEventListener('DOMContentLoaded', function(){
     document.querySelectorAll('.delete_list').forEach(button =>{
         button.onclick = function() {
@@ -22,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 })
 
-function DeletePost(project, task){
+// Delete task
+function DeleteTask(project, task){
     fetch(`/deleteTask/${project}/${task}`)
     .then(response => response.json())
     .then(data => {
@@ -31,6 +35,7 @@ function DeletePost(project, task){
     })
 }
 
+// Delete list
 function DeleteList(project, task, list){
     fetch(`/deleteList/${project}/${task}/${list}`)
     .then(response => response.json())
@@ -40,15 +45,18 @@ function DeleteList(project, task, list){
     })
 }
 
+// Update list
 function CheckToggle(project,task,list){
     console.log(project, task, list);
     fetch(`/toggleList/${project}/${task}/${list}`)
     .then(response => response.json())
     .then(data =>{
         if (data.status == true){
+            // Not done: Lighten a list's circle and remove the dash across list's name
             document.querySelector(`#list_${task}_${list}`).innerHTML = `<i class="far fa-circle fa-xs" ></i>`;
             document.querySelector(`#content_${task}_${list}`).style.textDecoration = "none";
         }else{
+            // Done: Darken a list's circle and put a dash across list's name
             document.querySelector(`#list_${task}_${list}`).innerHTML = `<i class="fas fa-circle fa-xs" ></i>`;
             console.log(document.querySelector(`#content_${task}_${list}`).color)
             document.querySelector(`#content_${task}_${list}`).style.textDecoration = "line-through";
@@ -80,15 +88,18 @@ window.onload = function() {
     var itemList = [];
 
     for(var i = 0; i < titleList.length; i++){
+        var date = new Date(timeSet[i])
+        date = date.setDate(date.getDate() + 1);
         var dict = {
             id: i,
             content: titleSet[i],
-            start: timeSet[i]
+            start: date
         }
         itemList.push(dict)
     }
 
     items.add(itemList)
+    console.log(itemList)
 
     // Configuration for the Timeline
     var options = {
@@ -96,8 +107,14 @@ window.onload = function() {
         moment: function(date) {
             return vis.moment(date).utc();
         },
-        // horizontalScroll: false,
-    
+        zoomable: false,
+        horizontalScroll: false,
+        verticalScroll: true,
+        height: `120px`,
+        autoResize: true,
+        timeAxis: { scale: 'day', step: 1 },
+        zoomMin: 1000 * 60 * 60 * 24 * 31,    //https://stackoverflow.com/questions/44624839/restricting-x-axis-range-for-vis-timeline-chart         
+        zoomMax: 1000 * 60 * 60 * 24 * 31 * 3 //https://stackoverflow.com/questions/44624839/restricting-x-axis-range-for-vis-timeline-chart
     };
 
     // Create a Timeline

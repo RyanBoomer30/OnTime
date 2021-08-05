@@ -8,6 +8,7 @@ import json
 
 from .models import *
 
+# Load the main page
 def index(request):
     user = request.user
     if user.is_anonymous:
@@ -18,6 +19,7 @@ def index(request):
             'project': project,
         })
 
+# Create a project
 def createProject(request):
     if request.method == "POST":
         name = request.POST.get("title", "")
@@ -28,7 +30,7 @@ def createProject(request):
         project.save()
         return HttpResponseRedirect(reverse("index"))
 
-
+# Load the project page
 def viewProject(request, project_id):
     user = request.user
     project = Project.objects.get(id=project_id)
@@ -41,17 +43,20 @@ def viewProject(request, project_id):
         page_number = request.GET.get('page')
         lists[i.id] = paginator.get_page(page_number)
     return render(request, "taskmanager/project.html",{
+        'project_name': project.name,
         'project_id': project_id,
         'task': tasks,
         'list': lists
     })
 
+# Delete the project
 def deleteProject(request, project_id):
     user = request.user
     project = Project.objects.get(id=project_id)
     project.delete()
     return HttpResponseRedirect(reverse("index"))
 
+# Login
 def login_view(request):
     if request.method == "POST":
 
@@ -71,12 +76,12 @@ def login_view(request):
     else:
         return render(request, "taskmanager/login.html")
 
-
+# Logout
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
+# Register
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -103,6 +108,7 @@ def register(request):
     else:
         return render(request, "taskmanager/register.html")
 
+# Create a task
 def createTask(request, project_id):
     project = Project.objects.get(id=project_id)
     task = Task.objects.create()
@@ -110,6 +116,7 @@ def createTask(request, project_id):
     project.save()
     return HttpResponseRedirect(reverse('viewProject', args=(project_id, )))
 
+# Edit the task title
 def editTask(request, project_id, task_id):
     project = Project.objects.get(id=project_id)
     task = project.projects.get(id=task_id)
@@ -118,6 +125,7 @@ def editTask(request, project_id, task_id):
     task.save()
     return HttpResponseRedirect(reverse('viewProject', args=(project_id, )))
 
+# Delete the task
 def deleteTask(request, project_id, task_id):
     project = Project.objects.get(id=project_id)
     task = project.projects.get(id=task_id)
@@ -126,6 +134,7 @@ def deleteTask(request, project_id, task_id):
         'task': "Placeholder"
     })
 
+# Create a list
 def createList(request, project_id, task_id):
     project = Project.objects.get(id=project_id)
     task = project.projects.get(id=task_id)
@@ -134,6 +143,7 @@ def createList(request, project_id, task_id):
     task.save()
     return HttpResponseRedirect(reverse('viewProject', args=(project_id, )))
 
+# Edit the list title
 def editList(request, project_id, task_id, list_id):
     project = Project.objects.get(id=project_id)
     task = project.projects.get(id=task_id)
@@ -143,6 +153,7 @@ def editList(request, project_id, task_id, list_id):
     taskList.save()
     return HttpResponseRedirect(reverse('viewProject', args=(project_id, )))
 
+# Delete the list
 def deleteList(request, project_id, task_id, list_id):
     project = Project.objects.get(id=project_id)
     task = project.projects.get(id=task_id)
@@ -152,7 +163,7 @@ def deleteList(request, project_id, task_id, list_id):
         'task': "Placeholder"
     })
 
-
+# Update the status of the list (done/not done)
 def toggleList(request, project_id, task_id, list_id):
     project = Project.objects.get(id=project_id)
     task = project.projects.get(id=task_id)

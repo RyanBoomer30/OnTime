@@ -20,6 +20,7 @@
 
 .taskBody {
     display: flex;
+    flex-direction: column;
     flex-wrap: wrap;
     font-family: "Poppins", sans-serif;
     margin: 0;
@@ -121,6 +122,14 @@ h1{
     color: green;
 }
 
+h2{
+    font-size: 2rem;
+    align-self: center;
+    justify-content: center;
+    opacity: 0.4;
+    color: green;
+}
+
 .input{
     width: 400px;
     max-width: 100%;
@@ -142,6 +151,7 @@ h1{
 h3{
     font-size: 26px;
     width: 300px;
+    max-width: 300px;
 }
 
 .projects{
