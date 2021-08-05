@@ -36,6 +36,11 @@ This app is user required and therefore login or register will be needed. Just i
 
 ![](Images/Login%20Page.PNG)
 
+# Django Model
+This is the Django Model that was being used to create all the users, projects, taks, and lists
+
+![](Images/Django%20Model.PNG)
+
 # Further Improvements
 - Finishing the frontend when creating projects, tasks, and lists will allow the app to run more responsive
 - Adding a deadline will allow better time tracking
