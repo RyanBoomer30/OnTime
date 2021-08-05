@@ -34,5 +34,6 @@ The timeline is created using [vis](https://visjs.org/). Any tasks upon creation
 # Login Page
 This app is user required and therefore login or register will be needed. Just input your username and password like any normal website.
 
+![](Images/Login%20Page.PNG)
 
 
