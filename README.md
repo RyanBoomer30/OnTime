@@ -14,8 +14,6 @@ After creating a project, user will be able to see the list of all of created pr
 # Project Page
 In the project page, the first thing the user will see is an "Add note" input that allow the creation of a task. A task model is then created from the backend and added to the reloaded project page.
 
-The task will be added to a [vis](https://visjs.org/) timeline at the date of its creation and a physical task form will appear.
-
 ## Task functions
 There are three main functions of a task form that are located on the green task toolbar:
 * By clicking on the title of the task, the user can freely edit the name and the entering changes will be updated (only at the backend). 
@@ -27,5 +25,14 @@ There can be an infinite amount of list per task, but only 7 will be presented a
 * By clicking on the circle icon, the user can check a list as done. This will also at the same time, crossout the list and change the color of the cirlce on the frontend.
 * By clicking on the title of the list, the user can freely edit the name and the entering changes will be updated (only at the backend). 
 * By clicking on the trash icon, the user can delete the list item entirely (both frontend and backend). 
+
+## Timeline
+The timeline is created using [vis](https://visjs.org/). Any tasks upon creation will be added to the timeline on the date it was created. A redline will also appears as an idication of the current time. If multiple tasks are created on the same day, their name will be stacked vertically on the timeline (vertical scrolling is enabled).
+
+![](Images/Task%20Page.PNG)
+
+# Login Page
+This app is user required and therefore login or register will be needed. Just input your username and password like any normal website.
+
 
 
