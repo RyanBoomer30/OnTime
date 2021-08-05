@@ -4,12 +4,26 @@
     box-sizing: border-box;
 }
 
-.nextBody {
+#navbar{
+    background-color: red;
+}
+
+.vis-item{
+    font-size: 10px;
+    top: 2px;
+}
+
+.vis-text{
+    font-size: 12px;
+
+}
+
+.taskBody {
     display: flex;
     flex-wrap: wrap;
     font-family: "Poppins", sans-serif;
     margin: 0;
-    padding-top: 3rem;
+    /* padding-top: 3rem; */
 }
 
 .add {
@@ -20,7 +34,7 @@
     cursor: pointer;
     padding: 0.5rem 1rem;
     position: fixed;
-    top: 1rem;
+    top: 0.5rem;
     right: 1rem;
 }
 
@@ -30,7 +44,6 @@
     align-items: center;
     border:1px solid black;
     background-color: #fff;
-    box-shadow: 0 0 10px 4px rgba(0, 0, 0, 0.1);
     margin: 20px;
     height: 400px;
     width: 400px;
@@ -51,24 +64,6 @@
     font-size: 1rem;
     margin-left: 0.5rem;
 }
-
-/* .note .main {
-    background-color: #eee;
-    overflow: hidden;
-    height: 355px;
-    width: 100%;
-}
-
-.note textarea {
-    outline: none;
-    font-family: inherit;
-    font-size: 1.2rem;
-    border: none;
-    height: 350px;
-    width: 100%;
-    overflow:hidden;
-}
-*/
 
 .note .hidden {
     display: none;
@@ -117,4 +112,57 @@
 .notes{
     position: relative;
     height: 400px;
+}
+
+h1{
+    font-size: 4rem;
+    text-align: center;
+    opacity: 0.4;
+    color: green;
+}
+
+.input{
+    width: 400px;
+    max-width: 100%;
+    margin: auto;
+}
+
+.create_project{
+    font-size: 2rem;
+    padding: 1rem 2rem;
+    display: block;
+    width: 100%;
+}
+
+.create_project::placeholder {
+    color: #b5b5b5;
+    text-align: center;
+}
+
+h3{
+    font-size: 26px;
+    width: 300px;
+}
+
+.projects{
+    padding: 10px;
+    width: 400px;
+    font-size: 20px;
+    border-style: solid;
+    margin: auto;
+    margin-top: 10px;
+    border-width: 1px;
+    display: flex;
+    text-align: center;
+    justify-content: flex-start;
+}
+
+.projects button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 0.5rem;
+    
 }

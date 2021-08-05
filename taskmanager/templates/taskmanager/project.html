@@ -1,0 +1,91 @@
+{% extends "taskmanager/layout.html" %}
+{% load static %}
+
+{% block script %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Notes App</title>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/1.1.1/marked.min.js"></script>
+    <script src="{% static 'taskmanager/index.js' %}"></script>
+    <script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+    <link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block taskBody %}
+    <div id="visualization" style="width: 100vw;"></div>
+    <div>
+        <form action="{% url 'createTask' project_id %}" method = "POST">
+            {% csrf_token %}
+            <button class="add" id="add">
+                <i class="fas fa-plus">Add note</i> 
+            </button>
+        </form>
+    </div>
+    
+    {% for task in task %}
+    <div class="infoDate" style="display: none;">{{ task.time|date:"Y-m-j" }}</div>
+    <div class="infoName" style="display: none;">{{ task.title }}</div>
+    <div class="note" id="{{ task.id }}">
+        <div class="notes">
+            <div class="tools">
+                <form action="{% url 'editTask' project_id task.id%}" method = "POST" class="task_title" >
+                    {% csrf_token %}
+                    <input type="text" class="task_title"  id="title_{{ task.id }}" name="title" value="{{ task.title }}">
+                </form>
+                <form action="{% url 'createList' project_id task.id%}" method = "POST">
+                    {% csrf_token %}
+                    <button class="edit"><i class="fas fa-edit"></i></button>
+                </form>
+                <button class="delete" data-project="{{ project_id }}" data-task="{{ task.id }}"><i class="fas fa-trash-alt"></i></button>
+            </div>
+            <div class="task_list" id="list_{{ task.id }}">
+                {% for id, i in list.items %}
+                    {% if id == task.id %}
+                        {% for list in i%}
+                        <div class="list_item" id="{{ list.id }}">
+                            {% if list.status == True %}
+                                <button class="check" id="list_{{ task.id }}_{{ list.id }}" data-project="{{ project_id }}" data-task="{{ task.id }}" data-list="{{ list.id }}"><i class="far fa-circle fa-xs" ></i></button>
+                            {% else %}
+                                <button class="check" id="list_{{ task.id }}_{{ list.id }}" data-project="{{ project_id }}" data-task="{{ task.id }}" data-list="{{ list.id }}"><i class="fas fa-circle fa-xs" ></i></button>
+                            {% endif %}
+                            <form action="{% url 'editList' project_id task.id list.id %}" method = "POST">
+                                {% csrf_token %}
+                                {% if list.status == True %}
+                                    <input type="text" class="list_content"  id="content_{{ task.id }}_{{ list.id }}" name="title" value="{{ list.content }}" style="text-decoration: none;">
+                                {% else %}
+                                <input type="text" class="list_content"  id="content_{{ task.id }}_{{ list.id }}" name="title" value="{{ list.content }}" style="text-decoration: line-through;">
+                                {% endif %}
+                            </form>
+                            <button class="delete_list" data-project="{{ project_id }}" data-task="{{ task.id }}" data-list="{{ list.id }}"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% for id, list in list.items %}
+                {% if id == task.id %}
+                <h6 class="page" style="border-style: hidden;">
+                    {% if list.has_previous %}
+                        &nbsp; <a href="?page={{ list.previous_page_number }}">previous</a>
+                    {% endif %} 
+                
+                    &nbsp; Page {{ list.number }} of {{ list.paginator.num_pages }}
+                
+                    {% if list.has_next %}
+                        &nbsp; <a href="?page={{ list.next_page_number }}">next</a>
+                    {% endif %}
+                </h6>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+    <div class=tasks>
+
+    </div>
+{% endblock %}
+
