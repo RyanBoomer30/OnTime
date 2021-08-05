@@ -36,4 +36,9 @@ This app is user required and therefore login or register will be needed. Just i
 
 ![](Images/Login%20Page.PNG)
 
+# Further Improvements
+- Finishing the frontend when creating projects, tasks, and lists will allow the app to run more responsive
+- Adding a deadline will allow better time tracking
+- More new functions like project descriptions, priority analysis, etc
+
 
