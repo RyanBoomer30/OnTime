@@ -179,3 +179,5 @@ def toggleList(request, project_id, task_id, list_id):
     return JsonResponse({
         'status': status
     })
+
+# To do later
